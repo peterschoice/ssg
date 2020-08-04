@@ -1,0 +1,76 @@
+{*** 회원가입 > 가입완료 | member/join_ok.php ***}
+{ # header }
+<div class="join_ok">
+	<div class="join_step">
+		<ul>
+			<li>{=__('약관동의')}</li>
+			<li>{=__('계정생성')}</li>
+			<li class="on">{=__('가입완료')}</li>
+		</ul>
+	</div>
+	<div class="join_content">
+		<p class="tx">{=__('%s님%s 가입을 축하드립니다!', memNm, '<br/>')}</p>
+	</div>
+	<div class="btn"><a href="../member/login.php" class="join_login_btn">{=__('로그인 하기')}</a></div>
+</div>
+<form id="frmAjaxOverlapPrevent" name="frmAjaxOverlapPrevent" style="display: none">
+    <input type="hidden" name="ajaxLoad" value="n">
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var aleadyLoad = false;
+
+        $('#btnHome').click(function (e) {
+            e.preventDefault();
+            top.location.href = '../main/index.php';
+        });
+        <!--{? isCBT == 'y' && ssgdfmAction == 'y'}-->
+        // API 전송
+        // 성공후에도 특별한 액션을 하지 않는다.
+        // API 전송 필수인경우  상단의 이벤트를 전송후에 발생하도록 제어할 필요가 있다.
+        if(aleadyLoad == false) {
+            if($('input[name=ajaxLoad]').val()=='n') {
+                $('input[name=ajaxLoad]').val('y');
+                $.ajax({
+                    type: 'post',
+                    url: './member_ps.php',
+                    async: true,
+                    cache: false,
+                    data: {
+                        mode: 'ssgdfm',
+                        memNo: {memNo}
+                    },
+                    dataType: 'json'
+                }).success(function (data) {
+                    aleadyLoad = true;
+                    console.log(data);
+                    /*if (data['result'] === 'ok') {
+
+                    } else {
+                        //alert(data['msg']);
+                        //return;
+                    }*/
+                }).error(function (e) {
+                    aleadyLoad = true;
+                    //alert(e.responseText);
+                    console.log(data);
+                });
+            }
+        }
+        console.log(aleadyLoad);
+        <!--{/}-->
+
+    });
+</script>
+<script>
+chai_at('conv',{_c:'1', _cd:'회원가입', _a:'0'});
+fbq('track', 'CompleteRegistration');
+</script>
+<script type="text/javascript" charset="UTF-8" src="//t1.daumcdn.net/adfit/static/kp.js"></script>
+<script type="text/javascript">
+      kakaoPixel('4567086861386233239').pageView();
+      kakaoPixel('4567086861386233239').viewCart();
+</script>
+{=fbCompleteRegistrationScript}
+{ # footer }

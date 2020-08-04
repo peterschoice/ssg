@@ -1,0 +1,531 @@
+{*** [위젯] 회원가입/정보 부가정보 | member/_join_view_other.html ***}
+<!--{? joinField.options.use == 'y'}-->
+<div class="addition_info_box">
+    <h3>{=__('부가 정보')}</h3>
+    <div class="addition_info_sec">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <colgroup>
+                <col width="25%">
+                <col width="75%">
+            </colgroup>
+            <tbody>
+            <!--{? joinField.fax.use == 'y'}-->
+            <tr>
+                <th><span>{=__('팩스번호')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <input type="text" id="fax" name="fax" class="text" data-pattern="gdNum" maxlength="12" placeholder="- {=__('없이 입력하세요.')}" value="{data.fax}">
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.sexFl.use == 'y'}-->
+            <tr>
+                <th><span {data.authClassRequired}>{=__('성별')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <div class="form_element">
+                            <ul>
+                                <li>
+                                    <input type="radio" id="sexFlMan" name="sexFl" value="m" {? data.sexFl == 'm'}checked="checked"{:}{? !isMyPage}{data.authDisabled}{/}{/}>
+                                    <label for="sexFlMan" class="choice_s {? data.sexFl == 'm'}on{/}">{=__('남자')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sexFlWoman" name="sexFl" value="w" {? data.sexFl == 'w'}checked="checked"{:}{? !isMyPage}{data.authDisabled}{/}{/}>
+                                    <label for="sexFlWoman" class="choice_s {? data.sexFl == 'w'}on{/}">{=__('여자')}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.birthDt.use == 'y'}-->
+            <tr>
+                <th><span {data.authClassRequired}>{=__('생일')}</span></th>
+                <td class="member_birthday">
+                    <div class="member_warning">
+                        <!--{? joinField.calendarFl.use == 'y'}-->
+                        <select id="calendarFl" name="calendarFl" class="chosen-select">
+                            <option value="">{=__('선택')}</option>
+                            <option value="s" {? data.calendarFl=='s'}selected{/}>{=__('양력')}</option>
+                            <option value="l" {? data.calendarFl=='l'}selected{/}>{=__('음력')}</option>
+                        </select>
+                        <!--{/}-->
+                    </div>
+                    <div class="member_warning">{=gd_select_box('birthYear', 'birthYear', DateYear, null, data.birthYear, __('년'), 'style="width: 100px;"' + data.authDisabled, 'chosen-single')}</div>
+                    <div class="member_warning">{=gd_select_box('birthMonth', 'birthMonth', DateMonth, null, data.birthMonth, __('월'), 'style="width: 80px;"' + data.authDisabled, 'chosen-single')}</div>
+                    <div class="member_warning">{=gd_select_box('birthDay', 'birthDay', DateDay, null, data.birthDay, __('일'), 'style="width: 80px;"' + data.authDisabled, 'chosen-single')}</div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.marriFl.use == 'y'}-->
+            <tr>
+                <th><span>{=__('결혼여부')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <div class="form_element">
+                            <ul>
+                                <li>
+                                    <input type="radio" id="marriFlNo" name="marriFl" value="n" {? data.marriFl == 'n'}checked="checked"{/}>
+                                    <label for="marriFlNo" class="choice_s {? data.marriFl == 'n'}on{/}">{=__('미혼')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="marriFlYes" name="marriFl" value="y" {? data.marriFl == 'y'}checked="checked"{/}>
+                                    <label for="marriFlYes" class="choice_s {? data.marriFl == 'y'}on{/}">{=__('기혼')}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.marriDate.use == 'y'}-->
+            <tr class="js_marridateinfo {? data.marriFl == 'n'}dn{/}">
+                <th><span>{=__('결혼기념일')}</span></th>
+                <td>
+                    <div class="member_warning">{=gd_select_box('marriYear', 'marriYear', DateYear, null, data.marriYear, __('년'), 'style="width: 100px;"', 'chosen-single')}</div>
+                    <div class="member_warning">{=gd_select_box('marriMonth', 'marriMonth', DateMonth, null, data.marriMonth, __('월'), 'style="width: 80px;"', 'chosen-single')}</div>
+                    <div class="member_warning">{=gd_select_box('marriDay', 'marriDay', DateDay, null, data.marriDay, __('일'), 'style="width: 80px;"', 'chosen-single')}</div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.job.use == 'y'}-->
+            <tr>
+                <th><span>{=__('직업')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <select name=job class="chosen-select select_jop">
+                            <option value="">{=__('직업을 선택해 주세요.')}</option>
+                            <!--{ @ joinField.job.data }--><!--{? .key_ == data['job']}-->
+                            <option value="{.key_}" selected="selected">{.value_}</option>
+                            <!--{:}-->
+                            <option value="{.key_}">{.value_}</option>
+                            <!--{/}--><!--{ / }-->
+                        </select>
+                    </div>
+                    <!-- //member_warning -->
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.interest.use == 'y' && count(joinField.interest.data) > 0}-->
+            <tr>
+                <th><span>{=__('관심분야')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <div class="form_element">
+                            <ul class="hobby_list">
+                                <!--{@ joinField.interest.data}-->
+                                <li>
+                                    <!--{?isset(data.interest) && is_array(data.interest) && array_search(.key_, data.interest)}-->
+                                    <input type="checkbox" id="{= 'interest' + .index_}" name="interest[]" value="{.key_}" checked="checked">
+                                    <label for="{= 'interest' + .index_}" class="check_s on">{.value_}</label>
+                                    <!--{:}-->
+                                    <input type="checkbox" id="{= 'interest' + .index_}" name="interest[]" value="{.key_}">
+                                    <label for="{= 'interest' + .index_}" class="check_s">{.value_}</label>
+                                    <!--{/}-->
+                                </li>
+                                <!--{/}-->
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.recommId.use == 'y'}-->
+            <tr>
+                <th><span>{=__('추천인 아이디')}</span></th>
+                <td>
+                    {? data.recommId != '' || (isMyPage && joinField.recommFl.use == 'y')}
+                    <input type="hidden" name="recommId" value="{data.recommId}">
+                    <span>{data.recommId}</span>
+                    {:}
+                    <div class="member_warning">
+                        <input type="text" id="recommId" name="recommId" value="{data.recommId}">
+                    </div>
+                    {/}
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.expirationFl.use == 'y' && !getMemberLifeEventCount && data.expirationFl != '999'}-->
+            <tr>
+                <th><span>{=__('휴면회원 방지기간')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <div class="form_element">
+                            <ul>
+                                <li>
+                                    <input type="radio" id="expirationFl1" name="expirationFl" value="1" {? data.expirationFl == '1'}checked="checked"{/}>
+                                    <label for="expirationFl1" class="choice_s {? data.expirationFl == '1'}on{/}">1{=__('년')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="expirationFl3" name="expirationFl" value="3" {? data.expirationFl == '3'}checked="checked"{/}>
+                                    <label for="expirationFl3" class="choice_s {? data.expirationFl == '3'}on{/}">3{=__('년')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="expirationFl5" name="expirationFl" value="5" {? data.expirationFl == '5'}checked="checked"{/}>
+                                    <label for="expirationFl5" class="choice_s {? data.expirationFl == '5'}on{/}">5{=__('년')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="expirationFl0" name="expirationFl" value="999" {? data.expirationFl == '999'}checked="checked"{/}>
+                                    <label for="expirationFl0" class="choice_s {? data.expirationFl == '999'}on{/}">{=__('탈퇴 시 - 평생회원')}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- //member_warning -->
+
+                    <!-- 평생회원 이벤트 안내문구 -->
+                    <div class="member_warning_info {? !activeEvent || memberLifeEventCnt > 0 || memberLifeEventView === 'hidden' }dn{/}">
+                        <div class="info_title">평생회원 이벤트</div>
+                        <div class="info_text">
+                            휴면회원 방지기간을 ‘탈퇴 시’로 변경하시면,<br>
+                            휴면회원으로 전환되지 않으며 고객님의 정보가 탈퇴 시까지 안전하게 보관됩니다.<br>
+                            <!--{? benefitType != 'manual' && benefitInfo}-->
+                            <br>
+                            지금 평생회원으로 전환 시 <span class="text_red">{benefitInfo}</span> 제공!
+                            <!--{/}-->
+                        </div>
+                    </div>
+                    <!-- 평생회원 이벤트 안내문구 -->
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.memo.use == 'y'}-->
+            <tr>
+                <th><span>{=__('남기는 말씀')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <textarea name="memo" maxlength="300">{data.memo}</textarea>
+                    </div>
+                    <!-- //member_warning -->
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? isCBT == 'y'}-->
+            <tr>
+                <th><span>{=__('신세계임직원 사번인증')}</span></th>
+                <td class="staff">
+                    <div class="staff_wrap">
+                    <input type="hidden" name="staffCheck" value="{data.staffFl}"/>
+                    <input type="text" class="text" name="staffNo" id="staffNo" value="{data.staffNo}"/>
+                    <button type="button" id="staff-no-btn" class="btn_staff_no">{=__('인증하기')}</button>
+                    </div>
+                    <!-- //member_warning -->
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{@ joinField.ex // 추가항목}-->
+            <tr>
+                <th><span>{.title}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <!--{? .type == 'SELECT'}-->
+                        <select name="{.key_}" class="chosen-select">
+                            <option value="">{=__('선택')}</option>
+                            <!--{@ .items}-->
+                            <!--{?
+                                (.key_ == 'ex1' && gd_trim(..value_) == data.ex1) ||
+                                (.key_ == 'ex2' && gd_trim(..value_) == data.ex2) ||
+                                (.key_ == 'ex3' && gd_trim(..value_) == data.ex3) ||
+                                (.key_ == 'ex4' && gd_trim(..value_) == data.ex4) ||
+                                (.key_ == 'ex5' && gd_trim(..value_) == data.ex5) ||
+                                (.key_ == 'ex6' && gd_trim(..value_) == data.ex6)
+                            }-->
+                            <option value="{..value_}" selected="selected">{..value_}</option>
+                            <!--{:}-->
+                            <option value="{..value_}">{..value_}</option>
+                            <!--{/}-->
+                            <!--{/}-->
+                        </select>
+                        <!--{: .type == 'RADIO'}-->
+                        <div class="form_element">
+                            <ul>
+                                <!--{@ .items}-->
+                                <li>
+                                    <!--{?
+                                        (.key_ == 'ex1' && gd_trim(..value_) == data.ex1) ||
+                                        (.key_ == 'ex2' && gd_trim(..value_) == data.ex2) ||
+                                        (.key_ == 'ex3' && gd_trim(..value_) == data.ex3) ||
+                                        (.key_ == 'ex4' && gd_trim(..value_) == data.ex4) ||
+                                        (.key_ == 'ex5' && gd_trim(..value_) == data.ex5) ||
+                                        (.key_ == 'ex6' && gd_trim(..value_) == data.ex6)
+                                        }-->
+                                    <input id="{.key_}_{..index_}" name="{.key_}" value="{..value_}"type="radio" checked="checked"/>
+                                    <label for="{.key_}_{..index_}" class="choice_s on">{..value_}</label>
+                                    <!--{:}-->
+                                    <input id="{.key_}_{..index_}" name="{.key_}" value="{..value_}"type="radio"/>
+                                    <label for="{.key_}_{..index_}" class="choice_s">{..value_}</label>
+                                    <!--{/}-->
+                                </li>
+                                <!--{/}-->
+                            </ul>
+                        </div>
+                        <!--{: .type == 'CHECKBOX'}-->
+                        <div class="form_element">
+                            <ul>
+                                <!--{@ .items}-->
+                                <li>
+                                    <!--{?
+                                        is_array(data.ex1) && in_array(gd_trim(..value_), data.ex1) ||
+                                        is_array(data.ex2) && in_array(gd_trim(..value_), data.ex2) ||
+                                        is_array(data.ex3) && in_array(gd_trim(..value_), data.ex3) ||
+                                        is_array(data.ex4) && in_array(gd_trim(..value_), data.ex4) ||
+                                        is_array(data.ex5) && in_array(gd_trim(..value_), data.ex5) ||
+                                        is_array(data.ex6) && in_array(gd_trim(..value_), data.ex6)
+                                        }-->
+                                    <input id="{.key_}_{..index_}" name="{.key_}" value="{..value_}"type="checkbox" checked="checked"/>
+                                    <label for="{.key_}_{..index_}" class="check_s on">{..value_}</label>
+                                    <!--{:}-->
+                                    <input id="{.key_}_{..index_}" name="{.key_}" value="{..value_}"type="checkbox"/>
+                                    <label for="{.key_}_{..index_}" class="check_s">{..value_}</label>
+                                    <!--{/}-->
+                                </li>
+                                <!--{/}-->
+                            </ul>
+                        </div>
+                        <!--{:}-->
+                        <input type="text" class="text" name="{.key_}" id="{.key_}" value="{data[.key_]}"/>
+                        <!--{/}-->
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            </tbody>
+        </table>
+    </div>
+    <!-- //addition_info_sec -->
+</div>
+<!-- //addition_info_box -->
+<!--{/}-->
+
+<!--{? isMyPage}-->
+<!--{?usePaycoLogin || useFacebookLogin || useNaverLogin || useKakaoLogin || useWonderLogin }-->
+<div class="site_info_box">
+    <h3>{=__('계정 연결정보')}</h3>
+    <!--{?connectFacebook}-->
+    <div class="site_sns_info">
+        <div class="site_sns_list_disconnect">
+            <em>{=__('연결 계정')}</em>
+            <!--{?data['snsJoinFl'] == 'n'}-->
+            <a href="#" class="my_facebook js_btn_sns_disconnect" data-sns="facebook" data-facebook-url="{=facebookUrl}"><span><img src="../img/mypage/site_join_facebook.png"/>{=__('연결해제')}</span></a>
+            <!--{:}-->
+            <span><img src="../img/mypage/site_login_facebook.png"/></span>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{: connectPayco}-->
+    <div class="site_sns_info">
+        <div class="site_sns_list_disconnect">
+            <em>{=__('연결 계정')}</em>
+            <!--{?data['snsJoinFl'] == 'n'}-->
+            <a href="#;" class="my_payco js_btn_sns_disconnect" data-sns="payco"><span><img src="../img/mypage/site_join_payco.png"/>{=__('연결해제')}</span></a>
+            <!--{:}-->
+            <span><img src="../img/mypage/site_login_payco.png"/></span>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{: connectNaver}-->
+    <div class="site_sns_info">
+        <div class="site_sns_list_disconnect">
+            <em>{=__('연결 계정')}</em>
+            <!--{?data['snsJoinFl'] == 'n'}-->
+            <a href="#;" class="my_naver js_btn_sns_disconnect" data-sns="naver"><span><img src="../img/mypage/site_join_naver.png"/>{=__('연결해제')}</span></a>
+            <!--{:}-->
+            <span><img src="../img/mypage/site_login_naver.png"/></span>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{: connectKakao}-->
+    <div class="site_sns_info">
+        <div class="site_sns_list_disconnect">
+            <em>{=__('연결 계정')}</em>
+            <!--{?data['snsJoinFl'] == 'n'}-->
+            <a href="#;" class="my_kakao js_btn_sns_disconnect" data-sns="kakao" data-kakao-url="{=kakaoUrl}"><span><img src="../img/mypage/site_join_kakao.png"/>{=__('연결해제')}</span></a>
+            <!--{:}-->
+            <span><img src="../img/mypage/site_login_kakao.png"/></span>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{: connectWonder}-->
+    <div class="site_sns_info">
+        <div class="site_sns_list_disconnect">
+            <em>{=__('연결 계정')}</em>
+            <!--{?data['snsJoinFl'] == 'n'}-->
+            <a href="#;" class="my_wonder js_btn_sns_disconnect" data-sns="wonder"><span><img src="../img/mypage/site_join_wonder.png"/>{=__('연결해제')}</span></a>
+            <!--{:}-->
+            <span><img src="../img/mypage/site_join_wonder.png"/></span>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{:}-->
+    <div class="site_sns_info">
+        <div class="site_sns_list">
+            <em>{=__('연결된 계정이 없습니다.')}</em>
+            <!--{?usePaycoLogin}-->
+            <a href="#;" class="my_payco js_btn_sns_connect" data-sns="payco"><span><img src="../img/mypage/pc_payco_s.png" alt="{=__('페이코 연결')}"></span></a>
+            <!--{/}-->
+            <!--{?useFacebookLogin}-->
+            <a href="#;" class="my_facebook js_btn_sns_connect" data-sns="facebook" data-facebook-url="{=facebookUrl}"><span><img src="../img/mypage/pc_facebook_s.png" alt="{=__('페이스북 연결')}"></span></a>
+            <!--{/}-->
+            <!--{?useNaverLogin}-->
+            <a href="#;" class="my_naver js_btn_sns_connect" data-sns="naver"><span><img src="../img/mypage/pc_naver_s.png" alt="{=__('네이버 연결')}"></span></a>
+            <!--{/}-->
+            <!--{?useKakaoLogin}-->
+            <a href="#;" class="my_kakao js_btn_sns_connect" data-sns="kakao"><span><img src="../img/mypage/pc_kakao_s.png" alt="{=__('카카오 연결')}"/></span></a>
+            <!--{/}-->
+            <!--{?useWonderLogin}-->
+            <a href="#;" class="my_wonder js_btn_sns_connect" data-sns="wonder" data-wonder-url="{=wonderReturnUrl}"><span><img src="../img/mypage/pc_wonder_s.png" alt="{=__('위메프 연결')}"/></span></a>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{/}-->
+</div>
+<!--{/}-->
+
+<!-- N : 약관동의 시작 -->
+<!--{? privateApprovalOption[0]['modeFl'] == 'y' || privateConsign[0]['modeFl']=='y' || privateOffer[0]['modeFl']=='y'}-->
+<div class="join_agreement_cont">
+    <h3>{=__('약관동의현황')}</h3>
+    <!--{? privateApprovalOption[0]['modeFl'] == 'y'}-->
+    <div class="join_agreement_box">
+        <div class="form_element">
+            <input type="checkbox" id="termsAgree3" class="chk_termsagree_all">
+            <label for="termsAgree3" class="check_s"><strong class="choice">({=__('선택')})</strong> {=__('개인정보 수집 및 이용')} </label>
+            <span><a href="../service/agreement.php?code={privateApprovalOption[0]['informCd']}" target="_blank">{=__('전체보기')}</a></span>
+        </div>
+        <div class="agreement_choice_box">
+            <!--{@ privateApprovalOption}-->
+            <table border="0" cellpadding="0" cellspacing="0" summary="{=__('개인정보 취급위탁 내용입니다.')}">
+                <colgroup>
+                    <col width="10px">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('선택')}</th>
+                    <th>{=nl2br(.informNm)}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="form_element">
+                            <!--{? isset(data['privateApprovalOptionFl']) && is_array(data['privateApprovalOptionFl']) && key_exists(.sno, data['privateApprovalOptionFl'])}-->
+                            <input type="checkbox" id="privateApprovalOption_{.sno}" name="privateApprovalOptionFl[{.sno}]" class="chk_termsagree" checked="checked">
+                            <label for="privateApprovalOption_{.sno}" class="check_s on"></label>
+                            <!--{:}-->
+                            <input type="checkbox" id="privateApprovalOption_{.sno}" name="privateApprovalOptionFl[{.sno}]" class="chk_termsagree">
+                            <label for="privateApprovalOption_{.sno}" class="check_s"></label>
+                            <!--{/}-->
+                        </div>
+                    </td>
+                    <td>{=nl2br(.content)}</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--{/ // privateApprovalOption loop end}-->
+        </div>
+    </div>
+    <!-- //join_agreement_box -->
+    <!--{/ // privateApprovalOption modeFl end}-->
+    <!--{? privateConsign[0]['modeFl']=='y'}-->
+    <div class="join_agreement_box">
+        <div class="form_element">
+            <input type="checkbox" id="termsAgree4">
+            <label for="termsAgree4" class="check_s"><strong class="choice">({=__('선택')})</strong> {=__('개인정보 취급위탁')} </label>
+            <span><a href="../service/agreement.php?code={privateConsign[0]['informCd']}" target="_blank">{=__('전체보기')}</a></span>
+        </div>
+        <div class="agreement_choice_box">
+            <!--{@ privateConsign}-->
+            <table border="0" cellpadding="0" cellspacing="0" summary="{=__('개인정보 취급위탁 내용입니다.')}">
+                <colgroup>
+                    <col width="10px">
+                    <col width="300px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('선택')}</th>
+                    <th>{=nl2br(.informNm)}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="form_element">
+                            <!--{? isset(data['privateConsignFl']) && is_array(data['privateConsignFl']) && key_exists(.sno, data['privateConsignFl'])}-->
+                            <input type="checkbox" id="privateConsign_{.sno}" name="privateConsignFl[{.sno}]" checked="checked">
+                            <label for="privateConsign_{.sno}" class="check_s on"></label>
+                            <!--{:}-->
+                            <input type="checkbox" id="privateConsign_{.sno}" name="privateConsignFl[{.sno}]">
+                            <label for="privateConsign_{.sno}" class="check_s"></label>
+                            <!--{/}-->
+                        </div>
+                    </td>
+                    <td>
+                        {=nl2br(.content)}
+                    </td>
+                </tr>
+                </tbody>
+                <!--{/ // privateConsign loop end}-->
+            </table>
+
+        </div>
+        <!-- //agreement_choice_box -->
+    </div>
+    <!-- //join_agreement_box -->
+    <!--{/ // privateConsign modeFl end}-->
+
+    <!--{? privateOffer[0]['modeFl']=='y'}-->
+    <div class="join_agreement_box">
+        <div class="form_element">
+            <input type="checkbox" id="termsAgree5" class="chk_termsagree2_all">
+            <label for="termsAgree5" class="check_s"><strong class="choice">({=__('선택')})</strong> {=__('개인정보 제 3자 제공')} </label>
+            <span>><a href="../service/agreement.php?code={privateOffer[0]['informCd']}" target="_blank">{=__('전체보기')}</a></span>
+        </div>
+        <div class="agreement_choice_box">
+            <!--{@ privateOffer}-->
+            <table border="0" cellpadding="0" cellspacing="0" summary="{=__('개인정보 제 3자 제공 내용입니다.')}">
+                <colgroup>
+                    <col width="10px">
+                    <col width="300px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('선택')}</th>
+                    <th>{=nl2br(.informNm)}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="form_element">
+                            <!--{? isset(data['privateOfferFl']) && is_array(data['privateOfferFl']) &&  key_exists(.sno, data['privateOfferFl'])}-->
+                            <input type="checkbox" id="privateOffer_{.sno}" name="privateOfferFl[{.sno}]" class="chk_termsagree2" checked="checked">
+                            <label for="privateOffer_{.sno}" class="check_s on"></label>
+                            <!--{:}-->
+                            <input type="checkbox" id="privateOffer_{.sno}" name="privateOfferFl[{.sno}]" class="chk_termsagree2">
+                            <label for="privateOffer_{.sno}" class="check_s"></label>
+                            <!--{/}-->
+                        </div>
+                    </td>
+                    <td>
+                        <div class="agreement_scroll">
+                            {=nl2br(.content)}
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--{/ // privateOffer loop end}-->
+        </div>
+        <!-- //agreement_choice_box -->
+    </div>
+    <!-- //join_agreement_box -->
+    <!--{/ // privateOffer modeFl end}-->
+</div>
+<!-- //join_agreement_cont -->
+<!--{ / }-->
+<!-- N : 약관동의 끝 -->
+
+<!--{/ // isMyPage end}-->

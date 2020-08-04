@@ -1,0 +1,378 @@
+{*** 마이페이지 > 내정보수정 | mypage/my_page.php ***}
+{ # header }
+
+<div class="content">
+<link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/member/member.css')}">
+    <div class="mypage_cont">
+
+        <div class="my_page">
+
+            <div class="mypage_zone_tit">
+                <h2>{=__('회원정보 변경')}</h2>
+            </div>
+
+            <div class="join_base_wrap">
+
+                <div class="member_cont">
+                    <form id="formJoin" name="formJoin" action="{mypageActionUrl}" method="post">
+                        <input type="hidden" name="memNo" value="{data.memNo}"/>
+                        <input type="hidden" name="memberFl" value="{data.memberFl}"/>
+                        <input type="hidden" name="dupeinfo" value="{data.dupeinfo}"/>
+                        <input type="hidden" name="rncheck" value="{data.rncheck}"/>
+                        <input type="hidden" name="mode" value="modify"/>
+                        <input type="hidden" name="ssgdfmMode" value="{data.ssgdfmFl}"/>
+
+                        <!-- 회원가입/정보 기본정보 -->{=includeWidget('member/_join_view.html')}<!-- 회원가입/정보 기본정보 -->
+                        <!-- 회원가입/정보 사업자정보 -->{=includeWidget('member/_join_view_business.html')}<!-- 회원가입/정보 사업자정보 -->
+                        <!-- 회원가입/정보 부가정보 -->{=includeWidget('member/_join_view_other.html')}<!-- 회원가입/정보 부가정보 -->
+
+                        <div class="btn_center_box">
+                            <button type="button" class="btn_member_cancel">{=__('취소')}</button>
+                            <button type="button" class="btn_comfirm js_btn_join" value="{=__('정보수정')}">{=__('정보수정')}</button>
+                        </div>
+                        <!-- //btn_center_box -->
+                    </form>
+                </div>
+                <!-- //member_cont -->
+            </div>
+            <!-- //join_base_wrap -->
+
+        </div>
+        <!-- //my_page -->
+
+    </div>
+    <!-- //mypage_cont -->
+
+</div>
+<!-- //content -->
+
+
+<script type="text/javascript">
+    var snsConnection = {snsConnection};
+    var $formJoin;
+    var privateApprovalSnos = {privateApprovalSnos};
+
+    $(document).ready(function () {
+        $formJoin = $('#formJoin');
+
+
+        <!--{? isCBT == 'y'}-->
+
+        <!--{? data.staffFl == 'r' && data.staffNo !=''}-->
+        var data ={
+            mode: 'setStaff'
+        };
+        $.ajax(
+            '../mypage/my_page_ps.php',
+            {type: "post", data: data})
+            .done(function (data, textStatus, jqXHR) {
+               console.log(data);
+            });
+        <!--{:}-->
+        $('.btn_staff_no').click(function(){
+            var data ={
+                mode: 'validateStaffNo',
+                staffNo: $('input[name=staffNo]').val(),
+                cellPhone: $('input[name=cellPhone]').val(),
+                memId: $('input[name=memId]').val(),
+                memNm: $('input[name=memNm]').val(),
+                email: $('input[name=email]').val(),
+                sexFl: $('input[name=sexFl]').val()
+            };
+            $.ajax(
+                '../mypage/my_page_ps.php',
+                {type: "post", data: data})
+                .done(function (data, textStatus, jqXHR) {
+                    //console.log(data);
+                    //return;
+                    var code = data.code;
+                    var message = data.message;
+                    if (code === 200) {
+                        $('input[name=staffCheck]').val('y');
+                        $('input[name=staffNo]').prop('readonly', true);
+                        $('.btn_staff_no').prop('disabled', true);
+                        alert(message);
+                    } else {
+                        //console.log(data);
+                        if(code==400) {
+                            alert(message + ' 항목이 필요합니다.');
+                        } else {
+                            alert(message);
+                        }
+                    }
+                });
+        });
+        <!--{/}-->
+
+        <!--{/}-->
+
+        $('.btn_member_cancel', $formJoin).click(function (e) {
+            e.preventDefault();
+            top.location.href = '/';
+        });
+
+        $('#btnAuthPhone').click(function (e) {
+            e.preventDefault();
+            var protocol = location.protocol;
+            var callbackUrl = "{=domainUrl}/member/authcellphone/dreamsecurity_result.php";
+            window.open(protocol + "//hpauthdream.godo.co.kr/module/Mobile_hpauthDream_Main.php?callType=modifymember&shopUrl=" + callbackUrl + "&cpid={=authDataCpCode}", "auth_popup", "top=30, left=50, status=0, width=425, height=650");
+        });
+
+        $('#btnPostcode').click(function (e) {
+            e.preventDefault();
+            gd_postcode_search('zonecode', 'address', 'zipcode');
+        });
+
+        $('#btnCompanyPostcode').click(function (e) {
+            e.preventDefault();
+            gd_postcode_search('comZonecode', 'comAddress', 'comZipcode');
+        });
+
+        // 인풋박스 선택 이벤트
+        var $datepicker = $('.js_datepicker');
+        if ($datepicker.length) {
+            $datepicker.datetimepicker({
+                locale: '{=gGlobal.locale}',
+                format: 'YYYY-MM-DD',
+                dayViewHeaderFormat: 'YYYY MM',
+                viewMode: 'days',
+                ignoreReadonly: true,
+                debug: false,
+                keepOpen: false
+            });
+        }
+
+        /**
+         * 약관 체크박스 이벤트
+         */
+        $('.join_agreement_box :checkbox', $formJoin).change(function (e) {
+
+            e.preventDefault();
+            $('p.msg').addClass('dn');
+            var $target = $(e.target), $label = $target.siblings('label'), $termsView = $target.closest('.join_agreement_box');
+            var isTermsAgreeSelect = (e.target.id === 'termsAgree3') || (e.target.id === 'termsAgree4') || (e.target.id === 'termsAgree5');
+            var isTargetChecked = $target.prop('checked') === true;
+
+            //console.log('aa')
+
+            if (isTargetChecked) {
+                if (isTermsAgreeSelect) {
+                    $termsView.find('.agreement_choice_box label').addClass('on');
+                    $termsView.find('.agreement_choice_box :checkbox').val('y').prop('checked', true);
+
+                    if (e.target.id === 'termsAgree5') {
+                      $('#privateApprovalOption_22').siblings('label').addClass('on');
+                      $('#privateApprovalOption_22').val('y').prop('checked', true);
+
+                      if ( $('#privateApprovalOption_30').prop('checked')) {
+                        $('#termsAgree3').siblings('label').addClass('on');
+                        $('#termsAgree3').val('y').prop('checked', true);
+                      }
+                    }
+                    if (e.target.id === 'termsAgree3') {
+                      $('#privateOffer_5').siblings('label').addClass('on');
+                      $('#privateOffer_5').val('y').prop('checked', true);
+
+                      $('#termsAgree5').siblings('label').addClass('on');
+                      $('#termsAgree5').val('y').prop('checked', true);
+                    }
+                } else {
+                    $target.val('y');
+                    $label.addClass('on');
+
+                    if ( $(this).hasClass('chk_termsagree') ) {
+        							var chk_termsagree_state = true;
+        							$('.chk_termsagree').each(function(){
+        								if ( $(this).prop('checked') === false ) {
+        									chk_termsagree_state = false;
+        								}
+        							})
+        							if ( chk_termsagree_state) {
+                        $('.chk_termsagree_all').siblings('label').addClass('on');
+                        $('.chk_termsagree_all').val('y').prop('checked', true);
+        							}
+        						}
+
+        						if ( $(this).hasClass('chk_termsagree2') ) {
+        							var chk_termsagree_state = true;
+        							$('.chk_termsagree2').each(function(){
+        								if ( $(this).prop('checked') === false ) {
+        									chk_termsagree_state = false;
+        								}
+        							})
+        							if ( chk_termsagree_state) {
+                        $('.chk_termsagree2_all').siblings('label').addClass('on');
+                        $('.chk_termsagree2_all').val('y').prop('checked', true);
+        							}
+        						}
+
+
+                    if( $(this).attr('id') == 'privateApprovalOption_22' ) {
+                      $('#privateOffer_5').siblings('label').addClass('on');
+                      $('#privateOffer_5').val('y').prop('checked', true);
+                      $('#termsAgree5').siblings('label').addClass('on');
+                      $('#termsAgree5').val('y').prop('checked', true);
+                    }
+
+                    if( $(this).attr('id') == 'privateOffer_5' ) {
+                      $('#privateApprovalOption_22').siblings('label').addClass('on');
+                      $('#privateApprovalOption_22').val('y').prop('checked', true);
+                    }
+
+                }
+                staffButtonTrigger();
+            } else {
+                if (isTermsAgreeSelect) {
+                    $termsView.find('.agreement_choice_box label').removeClass('on');
+                    $termsView.find('.agreement_choice_box :checkbox').val('n').prop('checked', false);
+
+                    if (e.target.id === 'termsAgree5') {
+
+                      $('#termsAgree3').siblings('label').removeClass('on');
+        							$('#termsAgree3').val('n').prop('checked', false);
+
+                      $('#privateApprovalOption_22').siblings('label').removeClass('on');
+                      $('#privateApprovalOption_22').val('n').prop('checked', false);;
+                    }
+
+                    if (e.target.id === 'termsAgree3') {
+                      $('#privateOffer_5').siblings('label').removeClass('on');
+                      $('#privateOffer_5').val('n').prop('checked', false);;
+
+                      $('#termsAgree5').siblings('label').removeClass('on');
+                      $('#termsAgree5').val('n').prop('checked', false);;
+                    }
+
+                } else {
+                    $target.val('n');
+                    $label.removeClass('on');
+
+                    if ( $(this).hasClass('chk_termsagree') ) {
+                      $('.chk_termsagree_all').siblings('label').removeClass('on');
+                      $('.chk_termsagree_all').val('n').prop('checked', false);
+                    }
+
+                    if ( $(this).hasClass('chk_termsagree2') ) {
+                      $('.chk_termsagree2_all').siblings('label').removeClass('on');
+                      $('.chk_termsagree2_all').val('n').prop('checked', false);
+                    }
+
+
+                    if( $(this).attr('id') == 'privateApprovalOption_22' ) {
+                      $('#privateOffer_5').siblings('label').removeClass('on');
+                      $('#privateOffer_5').val('n').prop('checked', false);
+                      $('#termsAgree5').siblings('label').removeClass('on');
+                      $('#termsAgree5').val('n').prop('checked', false);
+                    }
+
+                    if( $(this).attr('id') == 'privateOffer_5' ) {
+                      $('#privateApprovalOption_22').siblings('label').removeClass('on');
+                      $('#privateApprovalOption_22').val('n').prop('checked', false);
+                    }
+
+                }
+                staffButtonTrigger();
+            }
+
+        });
+
+        gd_select_email_domain('email');
+
+        <!--{? (joinField.marriFl.use == 'y' && joinField.marriDate.use == 'y') || joinField.birthDt.use == 'y' }-->
+        function sendDateData(year, month, type) {
+            var dayType = '';
+            var params = {
+                year: year,
+                month: month,
+            };
+            $.ajax('../share/date_select_json.php', {
+                data: params,
+                method: "POST",
+                success: function (data) {
+                    if (data !='' && data != null) {
+                        if (type == 'marry') {
+                            dayType = 'marriDay';
+                        }else {
+                            dayType = 'birthDay';
+                        }
+                        $('#'+dayType).empty();
+                        $('#'+dayType).append(data);
+                    }
+                }
+            });
+        }
+        <!--{/}-->
+
+        <!--{? joinField.marriFl.use == 'y' && joinField.marriDate.use == 'y'}-->
+        $(':radio[name="marriFl"]').change(function () {
+            var $marridateinfo = $('.js_marridateinfo');
+            if (this.value == 'y') {
+                $marridateinfo.removeClass('dn');
+            } else {
+                $marridateinfo.addClass('dn');
+                $('#marriYear option:eq(0)').prop('selected', true);
+                $('#marriMonth option:eq(0)').prop('selected', true);
+                $('#marriDay option:eq(0)').prop('selected', true);
+            }
+        });
+
+        $('#marriYear').change(function () {
+            var marriMonthVal = $('#marriMonth').val();
+            if (marriMonthVal != '') {
+                sendDateData($('#marriYear').val(), $('#marriMonth').val(), 'marry');
+            }
+        });
+        $('#marriMonth').change(function () {
+            var marriYearVal = $('#marriYear').val();
+            if (marriYearVal != '') {
+                sendDateData($('#marriYear').val(), $('#marriMonth').val(), 'marry');
+            }
+        });
+
+        $(':radio[name="marriFl"]:checked').trigger('change');
+        <!--{/}-->
+
+        <!--{? joinField.birthDt.use == 'y'}-->
+        $('#birthYear').change(function () {
+            var birthMonthVal = $('#birthMonth').val();
+            if ( birthMonthVal != '') {
+                sendDateData($('#birthYear').val(), $('#birthMonth').val(), 'birth');
+            }
+        });
+        $('#birthMonth').change(function () {
+            var birthYearVal = $('#birthYear').val();
+            if ( birthYearVal != '') {
+                sendDateData($('#birthYear').val(), $('#birthMonth').val(), 'birth');
+            }
+        });
+        <!--{/}-->
+
+        gd_member2.set_my_page(my_page);
+        gd_member2.init($formJoin);
+
+        $('.btn_comfirm').click({form: $formJoin}, gd_member2.save);
+    });
+
+    var join_field = <!--{= json_encode(joinField)}-->;
+    var join_data = <!--{= json_encode(data)}-->;
+    <!--{? isMyPage}-->
+    var my_page = true;
+    <!--{/}-->
+    function staffButtonTrigger() {
+        var agreementEleName = '';
+        var disabled = true;
+        agreementEleName = 'privateApprovalOptionFl['+privateApprovalSnos.option+']';
+        if($('input[name="'+agreementEleName+'"]').prop('checked')) {
+            agreementEleName = 'privateOfferFl['+privateApprovalSnos.offer+']';
+            if($('input[name="'+agreementEleName+'"]').prop('checked')) {
+                agreementEleName = 'privateApprovalOptionFl['+privateApprovalSnos.staffOption+']';
+                if($('input[name="'+agreementEleName+'"]').prop('checked')) {
+                    disabled = false;
+                }
+            }
+        }
+        console.log(disabled);
+        $('#staff-no-btn').prop('disabled', disabled);
+    }
+</script>
+{ # footer }

@@ -1,0 +1,223 @@
+{*** [위젯] 회원가입/정보 기본 | member/_join_view.html ***}
+<div class="base_info_box">
+    <h3>{=__('기본정보')}</h3>
+    <span class="important">{=__('표시는 반드시 입력하셔야 하는 항목입니다.')}</span>
+    <div class="base_info_sec">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <colgroup>
+                <col width="25%">
+                <col width="75%">
+            </colgroup>
+            <tbody>
+            <tr>
+                <th><span class="important">{=__('아이디')}</span></th>
+                <td>
+                    <!--{? isMyPage}-->
+                    <input type="hidden" name="memId" value="{data.memId}"/>
+                    {data.memId}
+                    <!--{:}-->
+                    <div class="member_warning">
+                        <input type="text" id="memId" name="memId" data-pattern="gdMemberId">
+                    </div>
+                    <!--{/}-->
+                </td>
+
+            </tr>
+            <tr class="{ ? isPaycoJoin || isNaverJoin || isThirdParty || isKakaoJoin || isWonderJoin }dn{ / }">
+                <th><span class="important">{=__('비밀번호')}</span></th>
+                <td class="member_password">
+                    <!--{? isMyPage}-->
+                    <div class="btn_common_box">
+                        <!--{? useSnsLogin == 'n' }-->
+                        <span class="btn_gray_list"><a href="#memberNewPw" class="btn_gray_mid"><em>{=__('비밀번호 변경')}</em></a></span>
+                        <!--{ : }-->
+                        <span class="btn_gray_list"><a href="#memberNewPw" class="btn_gray_mid"><em>{=__('비밀번호 설정')}</em></a></span>
+                        <!--{ / }-->
+                        <span class="btn_gray_list"><a href="#lyMemberPw" class="btn_gray_mid"><em>{=__('비밀번호 도움말')}</em></a></span>
+                    </div>
+
+                    <div id="lyMemberPw" class="layer_area" style="display:none;">
+                        <div class="ly_wrap pw_advice_layer">
+                            <div class="ly_tit">
+                                <strong>{=__('비밀번호 도움말')}</strong>
+                            </div>
+                            <div class="ly_cont">
+                                <div class="pw_advice_list">
+                                    <ul>
+                                        <li>{=__('영문대소문자는 구분이 되며, 한가지 문자로만 입력은 위험합니다.')}</li>
+                                        <li><strong>{=__('사용가능 특수문자')} :</strong> <strong class="fc_red">!@#$%^&*()_+-=`~</strong></li>
+                                        <li>{=__('ID/주민번호/생일/전화번호 등의 개인정보와 통상 사용 순서대로의 3자 이상 연속 사용은 피해주세요.')}
+                                            <br/>{=__('비밀번호는 주기적으로 바꾸어 사용하시는 것이 안전합니다.')}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- //ly_cont -->
+                            <a href="#close" class="ly_close"><img src="../img/common/layer/btn_layer_close.png" alt="{=__('닫기')}"></a>
+                        </div>
+                        <!-- //ly_wrap -->
+                    </div>
+                    <!-- //layer_area -->
+
+                    <div id="memberNewPw" class="member_pw_change" style="display:none;">
+                        <dl class="{ ? isEmptyPassword } dn { / }">
+                            <dt>{=__('현재 비밀번호')}</dt>
+                            <dd>
+                                <div class="member_warning">
+                                    <input type="password" id="currentPassword" name="oldMemPw"/>
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{=__('새 비밀번호')}</dt>
+                            <dd>
+                                <div class="member_warning">
+                                    <input type="password" id="newPassword" name="memPw"/>
+                                </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{=__('새 비밀번호 확인')}</dt>
+                            <dd>
+                                <div class="member_warning">
+                                    <input type="password" id="newPasswordCheck" name="memPwRe"/>
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                    <!-- //member_pw_change -->
+                    <!--{:}-->
+                    <div class="member_warning">
+                        <input type="password" id="newPassword" name="memPw" autocomplete="off" placeholder="{message.memPw.placeholder}">
+                    </div>
+                    <!--{/}-->
+                </td>
+            </tr>
+            {? !isMyPage}
+            <tr class="{ ? isPaycoJoin || isNaverJoin || isThirdParty || isKakaoJoin || isWonderJoin }dn{ / }">
+                <th><span class="important">{=__('비밀번호 확인')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <input type="password" class="check-id" name="memPwRe" autocomplete="off">
+                    </div>
+                </td>
+            </tr>
+            {/}
+            <tr>
+                <th><span class="important">{=__('이름')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <input type="text" name="memNm" data-pattern="gdMemberNmGlobal" value="{data.memNm}" maxlength="30" {data.authReadOnly}>
+                    </div>
+                </td>
+            </tr>
+            <!--{? joinField.pronounceName.use == 'y'}-->
+            <tr>
+                <th><span class="important">{=__('이름')}({=__('발음')})</span></th>
+                <td>
+                    <div class="member_warning">
+                        <input type="text" name="pronounceName" maxlength="30" value="{data.pronounceName}" data-pattern="{? gGlobal['isFront']}gdMemberNmGlobal{:}gdEngKor{/}">
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.nickNm.use == 'y'}-->
+            <tr>
+                <th><span>{=__('닉네임')}</span></th>
+                <td>
+                    <div class="member_warning">
+                        <input type="text" name="nickNm" maxlength="20" value="{data.nickNm}">
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.email.use == 'y'}-->
+            <tr>
+                <th><span>{=__('이메일')}</span></th>
+                <td class="member_email">
+                    <div class="member_warning">
+                        <input type="text" name="email" id="email" value="{data.email}" tabindex="-1">
+                        <select id="emailDomain" name="emailDomain" class="chosen-select">
+                            <!--{@ joinField.email.data}--><!--{? .value_ == data.emailDomain}-->
+                            <option value="{.key_}" selected="selected">{.value_}</option>
+                            <!--{:}-->
+                            <option value="{.key_}">{.value_}</option>
+                            <!--{/}--><!--{/}-->
+                        </select>
+                    </div>
+					<div class="member_warning js_email"></div>
+                    <!--{? joinField.maillingFl.use === 'y'}-->
+                    <div class="form_element">
+                        <input type="checkbox" id="maillingFl" name="maillingFl" value="y" {? data.maillingFl == 'y'}checked="checked"{/}>
+                        <label for="maillingFl" class="check_s {? data.maillingFl == 'y'}on{/}">{=__('정보/이벤트 메일 수신에 동의합니다.')}</label>
+                    </div>
+                    <!--{/}-->
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.cellPhone.use == 'y'}-->
+            <tr>
+                <th><span {data.authClassRequired}>{=__('휴대폰번호')}</span></th>
+                <td class="member_address">
+                    <!--{ ? gGlobal.isFront }-->
+                    {=gd_select_box('cellPhoneCountryCode', 'cellPhoneCountryCode', countryPhone, null, data.cellPhoneCountryCode, __('국가코드'), 'style="width: 120px;"', 'chosen-select')}
+                    <!--{ / }-->
+                    <div class="address_postcode">
+                        <input type="text" id="cellPhone" name="cellPhone" readonly maxlength="12" placeholder="- {=__('없이 입력하세요.')}" data-pattern="gdNum" value="{data.cellPhone}" {data.authReadOnly}>
+                        <!--{? isMyPage}-->
+                        <!--{ ? data.authReadOnly != '' }-->
+                        <!--
+                        <button class="btn_post_search" type="button" id="btnAuthPhone" style="display:none;">
+                            {=__('휴대폰번호 변경')}
+                        </button>
+                        -->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                    </div>
+                    <!--{? joinField.smsFl.use === 'y'}-->
+                    <div class="form_element" >
+                        <input type="checkbox" id="smsFl" name="smsFl" value="y" {? data.smsFl == 'y'}checked="checked"{/}>
+                        <label for="smsFl" class="check_s {? data.smsFl == 'y'}on{/}">{=__('정보/이벤트 SMS 수신에 동의합니다.')}</label>
+                    </div>
+                    <!--{/}-->
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.phone.use == 'y'}-->
+            <tr>
+                <th><span>{=__('전화번호')}</span></th>
+                <td>
+                    <!--{ ? gGlobal.isFront }-->
+                    {=gd_select_box('phoneCountryCode', 'phoneCountryCode', countryPhone, null, data.phoneCountryCode, __('국가코드'), 'style="width: 120px;"', 'chosen-select')}
+                    <!--{ / }-->
+                    <div class="member_warning">
+                        <input type="text" id="phone" name="phone" maxlength="12" placeholder="- {=__('없이 입력하세요.')}" data-pattern="gdNum" value="{data.phone}">
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            <!--{? joinField.address.use == 'y'}-->
+            <tr>
+                <th><span>{=__('주소')}</span></th>
+                <td class="member_address">
+                    <div class="address_postcode">
+                        <input type="text" name="zonecode" readonly="readonly" value="{? data.zonecode == ''}{data.zipcode}{:}{data.zonecode}{/}">
+                        <button type="button" id="btnPostcode" class="btn_post_search">{=__('우편번호검색')}</button>
+                        <input type="hidden" name="zipcode" value="{data.zipcode}">
+                    </div>
+                    <div class="address_input">
+                        <div class="member_warning">
+                            <input type="text" name="address" readonly="readonly" value="{data.address}">
+                        </div>
+                        <div class="member_warning js_address_sub">
+                            <input type="text" name="addressSub" value="{data.addressSub}">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!--{/}-->
+            </tbody>
+        </table>
+    </div>
+    <!-- //base_info_sec -->
+</div>
+<!-- //base_info_box -->

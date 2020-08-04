@@ -1,0 +1,609 @@
+{*** [위젯] 회원가입/정보 부가정보 | member/_join_view_other.html ***}
+<div class="join_view_other">
+<!--{? joinField.options.use == 'y'}-->
+	<div class="tit">{=__('부가 정보')}</div>
+		<!--{? joinField.fax.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('팩스번호')}</div>
+			<div class="input_content">
+				<input type="text" id="fax" name="fax" data-pattern="gdNum" maxlength="12" placeholder="{=__('- 없이 입력하세요')}" value="{data.fax}">
+			</div>
+		</div>
+		<!--{/}-->
+		<!--{? joinField.sexFl.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('성별')}</div>
+			<div class="input_content">
+				<span class="inp_rdo">
+					<input type="radio" class="ignore" id="sexFlMan" name="sexFl" value="m" {? data.sexFl=='m'}checked="checked"{:}{? !isMyPage }{data.authDisabled}{/}{/}/>
+					<label for="sexFlMan" class="{? data.sexFl == 'm'}on{/}">{=__('남자')}</label>
+					<input type="radio" class="ignore" id="sexFlWoman" name="sexFl" value="w" {? data.sexFl=='w'}checked="checked"{:}{? !isMyPage }{data.authDisabled}{/}{/}/>
+					<label for="sexFlWoman" class="{? data.sexFl == 'w'}on{/}">{=__('여자')}</label>
+				</span>
+			</div>
+		</div>
+		<!--{/}-->
+		<!--{? joinField.birthDt.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('생일')}</div>
+			<div class="input_content">
+				<!--{? joinField.calendarFl.use == 'y'}-->
+					<div class="inp_sel">
+						<select name="calendarFl" id="calendarFl" class="tune select-small" tabindex="-1">
+							<option value="">{=__('선택')}</option>
+							<option value="s" {? data.calendarFl=='s'}selected="selected"{/}>{=__('양력')}</option>
+							<option value="l" {? data.calendarFl=='l'}selected="selected"{/}>{=__('음력')}</option>
+						</select>
+					</div>
+				<!--{/}-->
+				<div class="inp_sel">
+					{=gd_select_box('birthYear', 'birthYear', DateYear, null, data.birthYear, __('년'), 'style="width: 40%;"' + data.authDisabled, 'tune select-small')}
+					{=gd_select_box('birthMonth', 'birthMonth', DateMonth, null, data.birthMonth, __('월'), 'style="width: 25%;"' + data.authDisabled, 'tune select-small')}
+					{=gd_select_box('birthDay', 'birthDay', DateDay, null, data.birthDay, __('일'), 'style="width: 32%;"' + data.authDisabled, 'tune select-small')}
+				</div>
+			</div>
+		</div>
+		<!--{/}-->
+		<!--{? joinField.marriFl.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('결혼여부')}</div>
+			<div class="input_content">
+				<span class="inp_rdo">
+					<input type="radio" class="ignore" id="marriFlNo" name="marriFl" value="n" {? data.marriFl=='n'}checked="checked"{/}>
+					<label for="marriFlNo" class="choice {? data.marriFl == 'n'}on{/}">{=__('미혼')}</label>
+					<input type="radio" class="ignore" id="marriFlYes" name="marriFl" value="y" {? data.marriFl=='y'}checked="checked"{/}>
+					<label for="marriFlYes" class="choice {? data.marriFl == 'y'}on{/}">{=__('기혼')}</label>
+				</span>
+			</div>
+		</div>
+		<!--{/}-->
+		<!--{? joinField.marriDate.use == 'y'}-->
+		<div class="input_wrap marridateinfo {? data.marriFl == 'n'}dn{/}">
+			<div class="input_title">{=__('결혼기념일')}</div>
+			<div class="input_content">
+				<div class="inp_sel">
+					{=gd_select_box('marriYear', 'marriYear', DateYear, null, data.marriYear, __('년'), 'style="width: 40%;"', 'tune select-small')}
+					{=gd_select_box('marriMonth', 'marriMonth', DateMonth, null, data.marriMonth, __('월'), 'style="width: 25%;"', 'tune select-small')}
+					{=gd_select_box('marriDay', 'marriDay', DateDay, null, data.marriDay, __('일'), 'style="width: 32%;"', 'tune select-small')}
+				</div>
+			</div>
+		</div>
+		<!--{/}-->
+		<!--{? joinField.job.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('직업')}</div>
+			<div class="input_content">
+				<div class="select-outer inp_sel">
+					<select name="job" >
+					<option value="">{=__('직업을 선택해 주세요.')}</option>
+					<!--{ @ joinField.job.data }--><!--{? .key_ == data['job']}-->
+					<option value="{.key_}" selected="selected">{=__(.value_)}</option>
+					<!--{:}-->
+					<option value="{.key_}">{=__(.value_)}</option>
+					<!--{/}--><!--{ / }-->
+					</select>
+				</div>
+			</div>
+		</div>
+		<!--{/}--><!--{? joinField.interest.use == 'y' && count(joinField.interest.data) > 0}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('관심분야')}</div>
+			<div class="input_content">
+				<div class="inp_sel">
+					<select name="interest">
+					<option value="">{=__('관심분야를 선택해 주세요')}</option>
+					<!--{@ joinField.interest.data}-->
+					<!--{? .key_ == data['interest']}-->
+					<option value="{.key_}" selected="selected">{=__(.value_)}</option>
+					<!--{:}-->
+					<option value="{.key_}">{=__(.value_)}</option>
+					<!--{/}-->
+					<!--{/}-->
+					</select>
+				</div>
+			</div>
+		</div>
+		<!--{/}--><!--{? joinField.recommId.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title"><span>{=__('추천인 아이디')}</span></div>
+			<div class="input_content">
+				{? data.recommId != '' || (isMyPage && joinField.recommFl.use == 'y')}
+				<input type="hidden" name="recommId" value="{data.recommId}">
+				<span>{data.recommId}</span>
+				{:}
+				<input type="text" id="recommId" name="recommId">
+				{/}
+			</div>
+		</div>
+		<!--{/}--><!--{? joinField.expirationFl.use == 'y' && !getMemberLifeEventCount && data.expirationFl != '999'}-->
+	<div class="input_wrap">
+		<div class="input_title"><span>{=__('휴면회원 방지기간')}</span></div>
+		<div class="input_content">
+			<div class="select-small-outer inp_sel">
+				<select name="expirationFl" class="tune select-small">
+					<option value="1" <!--{? data.expirationFl == '1'}-->selected="selected" <!--{/}-->>{=__('%s년','1')}</option>
+					<option value="3" <!--{? data.expirationFl == '3'}-->selected="selected" <!--{/}-->>{=__('%s년','3')}</option>
+					<option value="5" <!--{? data.expirationFl == '5'}-->selected="selected" <!--{/}-->>{=__('%s년','5')}</option>
+					<option value="999" <!--{? data.expirationFl == '999'}-->selected="selected" <!--{/}-->>{=__('탈퇴 시 - 평생회원')}</option>
+				</select>
+			</div>
+			<!-- 평생회원 이벤트 안내문구 -->
+			<div class="member_warning_info {? !activeEvent || memberLifeEventCnt > 0 || memberLifeEventView === 'hidden'}dn{/}">
+				<div class="info_title">평생회원 이벤트</div>
+				<div class="info_text">
+					휴면회원 방지기간을 ‘탈퇴 시’로 변경하시면,<br>
+					휴면회원으로 전환되지 않으며 고객님의 정보가 탈퇴 시까지 안전하게 보관됩니다.<br>
+					<!--{? benefitType != 'manual' && benefitInfo}-->
+					<br>
+					지금 평생회원으로 전환 시 <span class="text_red">{benefitInfo}</span> 제공!
+					<!--{/}-->
+				</div>
+			</div>
+			<!-- 평생회원 이벤트 안내문구 -->
+		</div>
+	</div>
+	<!--{/}--><!--{? joinField.memo.use == 'y'}-->
+		<div class="input_wrap">
+			<div class="input_title">{=__('남기는 말씀')}</div>
+			<div class="input_content">
+				<textarea name="memo" cols="20" rows="5" maxlength="300">{data.memo}</textarea>
+			</div>
+		</div>
+		<!--{/}--><!--{@ joinField.ex // 추가항목}-->
+		<div class="input_wrap">
+			<div class="input_title">{.title}</div>
+			<div class="input_content">
+				<!--{? .type == 'SELECT'}-->
+				<div class="inp_sel">
+					<select name="{.key_}">
+						<option value="">{=__('선택')}</option>
+						<!--{@ .items}-->
+						<!--{?
+								(.key_ == 'ex1' && gd_trim(..value_) == data.ex1) ||
+								(.key_ == 'ex2' && gd_trim(..value_) == data.ex2) ||
+								(.key_ == 'ex3' && gd_trim(..value_) == data.ex3) ||
+								(.key_ == 'ex4' && gd_trim(..value_) == data.ex4) ||
+								(.key_ == 'ex5' && gd_trim(..value_) == data.ex5) ||
+								(.key_ == 'ex6' && gd_trim(..value_) == data.ex6)
+								}-->
+						<option value="{..value_}" selected="selected">{..value_}</option>
+						<!--{:}-->
+						<option value="{..value_}">{..value_}</option>
+						<!--{/}-->
+						<!--{/}-->
+					</select>
+				</div>
+				<!--{: .type == 'RADIO'}-->
+				<!--{@ .items}-->
+				<span class="inp_rdo">
+				<!--{?
+					(.key_ == 'ex1' && gd_trim(..value_) == data.ex1) ||
+					(.key_ == 'ex2' && gd_trim(..value_) == data.ex2) ||
+					(.key_ == 'ex3' && gd_trim(..value_) == data.ex3) ||
+					(.key_ == 'ex4' && gd_trim(..value_) == data.ex4) ||
+					(.key_ == 'ex5' && gd_trim(..value_) == data.ex5) ||
+					(.key_ == 'ex6' && gd_trim(..value_) == data.ex6)
+					}-->
+				<input id="{.key_}_{..index_}" name="{.key_}" value="{..value_}" type="radio" class="ignore" checked="checked"/>
+				<label for="{.key_}_{..index_}">{..value_}</label><br/>
+				<!--{:}-->
+				<input id="{.key_}_{..index_}" name="{.key_}" value="{..value_}" class="ignore" type="radio"/>
+				<label for="{.key_}_{..index_}">{..value_}</label><br/>
+				<!--{/}-->
+				<!--{/}-->
+				</span>
+				<!--{: .type == 'CHECKBOX'}-->
+				<div class="choice_check">
+					<!--{@ .items}-->
+					<span class="inp_chk">
+						<!--{?
+							   is_array(data.ex1) && in_array(gd_trim(..value_), data.ex1) ||
+							   is_array(data.ex2) && in_array(gd_trim(..value_), data.ex2) ||
+							   is_array(data.ex3) && in_array(gd_trim(..value_), data.ex3) ||
+							   is_array(data.ex4) && in_array(gd_trim(..value_), data.ex4) ||
+							   is_array(data.ex5) && in_array(gd_trim(..value_), data.ex5) ||
+							   is_array(data.ex6) && in_array(gd_trim(..value_), data.ex6)
+							   }-->
+						<input id="{.key_}_{..index_}" name="{.key_}[]" value="{..value_}" class="ignore" type="checkbox" checked="checked"/>
+						<label for="{.key_}_{..index_}">{..value_}</label>
+						<!--{:}-->
+						<input id="{.key_}_{..index_}" name="{.key_}[]" value="{..value_}" class="ignore" type="checkbox"/>
+						<label for="{.key_}_{..index_}">{..value_}</label>
+						<!--{/}-->
+					</span><br/>
+					<!--{/}-->
+				</div>
+				<!--{:}-->
+				<input type="text" name="{.key_}" id="{.key_}" value="{data[.key_]}"/>
+				<!--{/}-->
+			</div>
+		</div>
+		<!--{/}-->
+		<!--{? isCBT == 'y'}-->
+		<!-- 2020.7.16사번인증 -->
+		<div class="input_wrap  company_certificate">
+			<div class="input_title">신세계임직원 <br>사번인증</div>
+			<div class="input_content">
+				<div class="certificate_bx ">
+					<input type="hidden" name="staffCheck" value="{data.staffFl}"/>
+					<input type="text" class="text" name="staffNo" id="staffNo" value="{data.staffNo}"/>
+					<button type="button" id="staff-no-btn" class="btn_staff_no">인증하기</button>
+				</div>
+			</div>
+		</div> 
+		<!-- //2020.7.16사번인증 -->
+		<!--{/}-->
+	<!--{/}-->
+	<!--{? isMyPage}-->
+	<!--{? usePaycoLogin || useFacebookLogin || useNaverLogin || useKakaoLogin || useWonderLogin }-->
+	<div class="tit">{=__('계정 연결정보')}</div>
+	<div class="sns_content">
+		<!--{?connectFacebook}-->
+		<div class="sns_disconnect">
+			<img src="../img/etc/square_facebook.png" alt="{=__('페이스북')}"><span>{=__('페이스북')}</span>
+			<!--{?data['snsJoinFl'] == 'n'}-->
+			<button class="disconnect_sns_btn js_btn_sns_disconnect" data-facebook-url="{=facebookUrl}" data-sns="facebook">{=__('연결해제')}</button>
+			<!--{/}-->
+		</div>
+		<!--{: connectPayco}-->
+		<div class="sns_disconnect">
+			<img src="../img/etc/square_payco.png" alt="{=__('페이코')}"><span>{=__('페이코')}</span>
+			<!--{?data['snsJoinFl'] == 'n'}-->
+			<button class="disconnect_sns_btn js_btn_sns_disconnect" data-sns="payco">{=__('연결해제')}</button>
+			<!--{/}-->
+		</div>
+		<!--{: connectNaver}-->
+		<div class="sns_disconnect">
+			<img src="../img/etc/square_naver.png" alt="{=__('네이버')}"><span>{=__('네이버')}</span>
+			<!--{?data['snsJoinFl'] == 'n'}-->
+			<button class="disconnect_sns_btn js_btn_sns_disconnect" data-sns="naver">{=__('연결해제')}</button>
+			<!--{/}-->
+		</div>
+		<!--{: connectKakao}-->
+		<div class="sns_disconnect">
+			<img src="../img/etc/square_kakao.png" alt="{=__('카카오')}"><span>{=__('카카오')}</span>
+			<!--{?data['snsJoinFl'] == 'n'}-->
+			<button class="disconnect_sns_btn js_btn_sns_disconnect" data-sns="kakao" data-kakao-url="{=kakaoUrl}">{=__('연결해제')}</button>
+			<!--{/}-->
+		</div>
+		<!--{: connectWonder}-->
+		<div class="sns_disconnect">
+			<img src="../img/etc/square_wonder.png" alt="{=__('위메프')}"><span>{=__('위메프 로그인')}</span>
+			<!--{?data['snsJoinFl'] == 'n'}-->
+			<button class="disconnect_sns_btn js_btn_sns_disconnect" data-sns="wonder" data-wonder-url="{=wonderReturnUrl}">{=__('연결해제')}</button>
+			<!--{/}-->
+		</div>
+		<!--{:}-->
+		<p class="sns_message">{=__('연결된 계정이 없습니다.')}</p>
+		<div class="sns_connect_box">
+			<ul>
+				<!--{?usePaycoLogin}-->
+				<li class="payco"><a href="#button" class="js_btn_sns_connect" data-sns="payco"><img src="../img/etc/mo_payco_s.png" alt="{=__('PAYCO')} {=__('아이디 로그인')}"></a></li>
+				<!--{/}-->
+				<!--{?useFacebookLogin}-->
+				<li class="facebook"><a href="#button" class="js_btn_sns_connect" data-sns="facebook" data-facebook-url="{=facebookUrl}"><img src="../img/etc/mo_facebook_s.png" alt="{=__('FACEBOOK')} {=__('아이디 로그인')}"></a></li>
+				<!--{/}-->
+				<!--{?useNaverLogin}-->
+				<li class="naver"><a href="#button" class="js_btn_sns_connect btn" data-sns="naver"><img src="../img/etc/mo_naver_s.png" alt="{=__('네이버')} {=__('아이디 로그인')}"></a></li>
+				<!--{/}-->
+				<!--{?useKakaoLogin}-->
+				<li class="kakao"><a href="#button" class="js_btn_sns_connect btn" data-sns="kakao"><img src="../img/etc/mo_kakao_s.png" alt="{=__('카카오')} {=__('카카오 연결')}"></a></li>
+				<!--{/}-->
+				<!--{?useWonderLogin}-->
+				<li class="wonder"><a href="#button" class="js_btn_sns_connect btn" data-sns="wonder" data-wonder-url="{=wonderReturnUrl}"><img src="../img/etc/mo_wonder_s.png" alt="{=__('위메프')} {=__('위메프 연결')}"></a></li>
+				<!--{/}-->
+			</ul>
+		</div>
+		<!--{/}-->
+	</div>
+	<!--{/}-->
+	<!--{? privateApprovalOption[0]['modeFl'] == 'y'}-->
+	<div class="privacy_big_box">
+		<div class="privacy_box">
+			<dl>
+				<dt>
+					<span class="inp_chk">
+						<input type="checkbox" id="termsAgree3"  class="chk_termsagree_all" name="">
+						<label for="termsAgree3">({=__('선택')}) {=__('개인정보 수집 및 이용')}</label>
+					</span>
+				</dt>
+				<dd><button type="button">{=__('내용보기')} ▼</button></dd>
+			</dl>
+			<div class="privacy_content">
+				<!--{@ privateApprovalOption}-->
+				<div class="privacy_big_box">
+					<div class="privacy_box">
+						<dl>
+							<dt>
+								<span class="inp_chk">
+									<!--{? isset(data['privateApprovalOptionFl']) && is_array(data['privateOfferFl']) && key_exists(.sno, data['privateApprovalOptionFl'])}-->
+									<input type="checkbox" id="privateApprovalOption_{.sno}" class="chk_termsagree" name="privateApprovalOptionFl[{.sno}]" checked="checked">
+									<label for="privateApprovalOption_{.sno}">{=nl2br(.informNm)}</label>
+									<!--{:}-->
+									<input type="checkbox" id="privateApprovalOption_{.sno}" class="chk_termsagree" name="privateApprovalOptionFl[{.sno}]">
+									<label for="privateApprovalOption_{.sno}">{=nl2br(.informNm)}</label>
+									<!--{/}-->
+								</span>
+							</dt>
+							<dd><button type="button">{=__('내용보기')} ▼</button></dd>
+						</dl>
+						<div class="privacy_content">
+							<div>{=nl2br(.content)}</div>
+						</div>
+					</div>
+				</div>
+				<!--{/}-->
+			</div>
+		</div>
+	</div>
+	<!--{/ // privateApprovalOption modeFl end}-->
+	<!--{? privateConsign[0]['modeFl']=='y'}-->
+	<div class="privacy_big_box">
+		<div class="privacy_box">
+			<dl>
+				<dt>
+					<span class="inp_chk">
+						<input type="checkbox" id="termsAgree4" name="">
+						<label for="termsAgree4">({=__('선택')}) {=__('개인정보 취급위탁')}</label>
+					</span>
+				</dt>
+				<dd><button type="button">{=__('내용보기')} ▼</button></dd>
+			</dl>
+			<div class="privacy_content">
+				<!--{@ privateConsign}-->
+				<div class="privacy_big_box">
+					<div class="privacy_box">
+						<dl>
+							<dt>
+								<span class="inp_chk">
+									<!--{? isset(data['privateConsignFl']) && is_array(data['privateOfferFl']) && key_exists(.sno, data['privateConsignFl'])}-->
+									<input type="checkbox"id="privateConsign_{.sno}" name="privateConsignFl[{.sno}]" checked="checked">
+									<label for="privateConsign_{.sno}">{=nl2br(.informNm)}</label>
+									<!--{:}-->
+									<input type="checkbox" id="privateConsign_{.sno}" name="privateConsignFl[{.sno}]">
+									<label for="privateConsign_{.sno}">{=nl2br(.informNm)}</label>
+									<!--{/}-->
+								</span>
+							</dt>
+							<dd><button type="button">{=__('내용보기')} ▼</button></dd>
+						</dl>
+						<div class="privacy_content">
+							<div>{=nl2br(.content)}</div>
+						</div>
+					</div>
+				</div>
+				<!--{/}-->
+			</div>
+		</div>
+	</div>
+	<!--{/ // privateConsign modeFl end}-->
+	<!--{? privateOffer[0]['modeFl']=='y'}-->
+	<div class="privacy_big_box">
+		<div class="privacy_box">
+			<dl>
+				<dt>
+					<span class="inp_chk">
+						<input type="checkbox" id="termsAgree5" class="chk_termsagree2_all" name="">
+						<label for="termsAgree5">({=__('선택')}) {=__('개인정보 제 3자 제공')}</label>
+					</span>
+				</dt>
+				<dd><button type="button">{=__('내용보기')} ▼</button></dd>
+			</dl>
+			<div class="privacy_content">
+				<!--{@ privateOffer}-->
+				<div class="privacy_big_box">
+					<div class="privacy_box">
+						<dl>
+							<dt>
+								<span class="inp_chk">
+									<!--{? isset(data['privateOfferFl']) && is_array(data['privateOfferFl']) && key_exists(.sno, data['privateOfferFl'])}-->
+										<input type="checkbox" id="privateOffer_{.sno}" class="chk_termsagree2" name="privateOfferFl[{.sno}]" checked="checked">
+										<label for="privateOffer_{.sno}">{=nl2br(.informNm)}</label>
+									<!--{:}-->
+										<input type="checkbox" id="privateOffer_{.sno}" class="chk_termsagree2" name="privateOfferFl[{.sno}]">
+										<label for="privateOffer_{.sno}">{=nl2br(.informNm)}</label>
+									<!--{/}-->
+								</span>
+							</dt>
+							<dd><button type="button">{=__('내용보기')} ▼</button></dd>
+						</dl>
+						<div class="privacy_content">
+							<div>{=nl2br(.content)}</div>
+						</div>
+					</div>
+				</div>
+				<!--{/}-->
+			</div>
+		</div>
+	</div>
+	<!--{/ // privateOffer modeFl end}-->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			 * 약관 체크박스 이벤트
+			 */
+			$('.privacy_box :checkbox').change(function (e) {
+				e.preventDefault();
+				$('p.msg').addClass('dn');
+				var $target = $(e.target), $label = $target.siblings('label'), $termsView = $target.closest('.privacy_box');
+				var isTermsAgreeSelect = (e.target.id === 'termsAgree3') || (e.target.id === 'termsAgree4') || (e.target.id === 'termsAgree5');
+				var isTargetChecked = $target.prop('checked') === true;
+
+				if (isTargetChecked) {
+					if (isTermsAgreeSelect) {
+						$termsView.find('.privacy_box :checkbox').prop('checked', true);
+						$termsView.find('.privacy_box :checkbox').val('y');
+
+
+
+						if (e.target.id === 'termsAgree5') {
+							$('#privateApprovalOption_22').siblings('label').addClass('on');
+							$('#privateApprovalOption_22').val('y').prop('checked', true);
+
+							if ( $('#privateApprovalOption_30').prop('checked') == true) {
+								$('#termsAgree3').siblings('label').addClass('on');
+								$('#termsAgree3').val('y').prop('checked', true);
+							}
+
+						}
+
+						if (e.target.id === 'termsAgree3') {
+							$('#privateOffer_5').siblings('label').addClass('on');
+							$('#privateOffer_5').val('y').prop('checked', true);
+
+							$('#termsAgree5').siblings('label').addClass('on');
+							$('#termsAgree5').val('y').prop('checked', true);
+						}
+					} else {
+						$target.val('y');
+						$label.addClass('on');
+
+						if ( $(this).hasClass('chk_termsagree') ) {
+							var chk_termsagree_state = true;
+							$('.chk_termsagree').each(function(){
+								if ( $(this).prop('checked') === false ) {
+									chk_termsagree_state = false;
+								}
+							})
+							if ( chk_termsagree_state) {
+								$('.chk_termsagree_all').prop('checked', true);
+							}
+
+
+							if ( $(this).hasClass('chk_termsagree') ) {
+								var chk_termsagree_state = true;
+								$('.chk_termsagree').each(function(){
+									if ( $(this).prop('checked') === false ) {
+										chk_termsagree_state = false;
+									}
+								})
+								if ( chk_termsagree_state) {
+									$('.chk_termsagree_all').siblings('label').addClass('on');
+									$('.chk_termsagree_all').val('y').prop('checked', true);
+								}
+							}
+
+
+							if ( $(this).hasClass('chk_termsagree2') ) {
+
+								var chk_termsagree_state = true;
+								$('.chk_termsagree2').each(function(){
+									if ( $(this).prop('checked') === false ) {
+										chk_termsagree_state = false;
+									}
+								})
+
+								if ( chk_termsagree_state) {
+
+									$('.chk_termsagree2_all').siblings('label').addClass('on');
+									$('.chk_termsagree2_all').val('y').prop('checked', true);
+
+								}
+							}
+
+
+							if( $(this).attr('id') == 'privateApprovalOption_22' ) {
+
+								$('#privateOffer_5').siblings('label').addClass('on');
+								$('#privateOffer_5').val('y').prop('checked', true);
+
+								$('#termsAgree5').siblings('label').addClass('on');
+								$('#termsAgree5').val('y').prop('checked', true);
+							}
+
+							if( $(this).attr('id') == 'privateOffer_5' ) {
+								$('#privateApprovalOption_22').siblings('label').addClass('on');
+								$('#privateApprovalOption_22').val('y').prop('checked', true);
+							}
+
+
+						}
+
+						if ( $(this).hasClass('chk_termsagree2') ) {
+							var chk_termsagree_state = true;
+							$('.chk_termsagree2').each(function(){
+								if ( $(this).prop('checked') === false ) {
+									chk_termsagree_state = false;
+								}
+							})
+							if ( chk_termsagree_state) {
+								$('.chk_termsagree2_all').prop('checked', true);
+							}
+
+							if( $(this).attr('id') == 'privateOffer_5' ) {
+								$('#privateApprovalOption_22').siblings('label').addClass('on');
+								$('#privateApprovalOption_22').val('y').prop('checked', true);
+							}
+						}
+					}
+				} else {
+					if (isTermsAgreeSelect) {
+						$termsView.find('.privacy_box :checkbox').prop('checked', false);
+						$termsView.find('.privacy_box :checkbox').val('n');
+
+						if (e.target.id === 'termsAgree5') {
+
+							$('#termsAgree3').siblings('label').removeClass('on');
+							$('#termsAgree3').val('n').prop('checked', false);
+
+							$('#privateApprovalOption_22').siblings('label').removeClass('on');
+							$('#privateApprovalOption_22').val('n').prop('checked', false);
+						}
+
+						if (e.target.id === 'termsAgree3') {
+							$('#privateOffer_5').siblings('label').removeClass('on');
+							$('#privateOffer_5').val('n').prop('checked', false);
+
+							$('#termsAgree5').siblings('label').removeClass('on');
+							$('#termsAgree5').val('n').prop('checked', false);
+						}
+
+
+					} else {
+						$target.val('n');
+						$label.removeClass('on');
+
+						if ( $(this).hasClass('chk_termsagree') ) {
+							$('.chk_termsagree_all').prop('checked', false);
+						}
+
+						if ( $(this).hasClass('chk_termsagree2') ) {
+							$('.chk_termsagree2_all').prop('checked', false);
+						}
+
+						if( $(this).attr('id') == 'privateApprovalOption_22' ) {
+							$('#privateOffer_5').siblings('label').removeClass('on');
+							$('#privateOffer_5').val('n').prop('checked', false);
+
+							$('#termsAgree5').siblings('label').removeClass('on');
+							$('#termsAgree5').val('n').prop('checked', false);
+						}
+
+						if( $(this).attr('id') == 'privateOffer_5' ) {
+							$('#privateApprovalOption_22').siblings('label').removeClass('on');
+							$('#privateApprovalOption_22').val('n').prop('checked', false);
+						}
+
+
+					}
+				}
+			});
+			/*
+			 * 약관 내용보기 이벤트
+			 */
+			$('.privacy_box dd button').on({
+				'click':function(){
+					var privacy_dp = $(this).parent().parent().parent().find('> .privacy_content').css('display');
+					if(privacy_dp == 'none'){
+						$(this).parent().parent().parent().find('> .privacy_content').slideDown();
+						$(this).html("{=__('내용닫기')} ▲");
+					} else {
+						$(this).parent().parent().parent().find('> .privacy_content').slideUp();
+						$(this).html("{=__('내용보기')} ▼");
+					}
+				}
+			});
+		});
+	</script>
+	<!--{/ // isMyPage end}-->
+</div>
