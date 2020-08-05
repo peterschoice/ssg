@@ -37,4 +37,26 @@ class DBTableField extends \Bundle\Component\Database\DBTableField
 
         return $arrField;
     }
+
+    /**
+     * [LOG] tableLogSfApi 필드 기본값
+     *
+     * @date 2020-08-05 10:11:50 junlae.kim@webidas.com
+     * @return array tableLogSfApi 테이블 필드 정보
+     */
+    public static function tableLogSfApi()
+    {
+        // @formatter:off
+        $arrField = [
+            ['val' => 'transactionFl', 'typ' => 's', 'def' => 'order'], // 트랜잭션 유형
+            ['val' => 'transactionNo', 'typ' => 's', 'def' => null], // 트랜잭션 참조번호
+            ['val' => 'serviceNm', 'typ' => 's', 'def' => 'apiOrderRequest'], // 요청 메소드
+            ['val' => 'sendDate', 'typ' => 's', 'def' => null], // 전송일시
+            ['val' => 'sendData', 'typ' => 's', 'def' => null], // 전송 xml
+            ['val' => 'receiveData', 'typ' => 's', 'def' => null], // 수신 xml
+        ];
+        // @formatter:on
+
+        return $arrField;
+    }
 }
