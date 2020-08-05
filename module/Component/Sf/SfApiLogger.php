@@ -13,19 +13,22 @@ use Framework\Database\DBTool;
 use Component\Database\DBTableField;
 use Request;
 use Exception;
+use App;
 
 class SfApiLogger
 {
     /** @var DBTool  */
-    protected $_db;
+    protected $db;
 
     protected $logSeq;
 
     protected $serviceName;
 
-    public function __construct(DBTool $db)
+    public function __construct()
     {
-        $this->_db = $db;
+        if(is_object($this->db)) {
+            $this->db = App::load('DB');
+        }
     }
 
     /**
@@ -60,7 +63,7 @@ class SfApiLogger
             $transactionFl,
             $transactionNo
         ];
-        $getData = $this->_db->query_fetch($strSQL, $arrBind);
+        $getData = $this->db->query_fetch($strSQL, $arrBind);
 
         if (is_null($getData) === true) {
             return false;
@@ -94,14 +97,14 @@ class SfApiLogger
             }
         }
         $arrInclude = array_keys($getData);
-        $arrBind = $this->_db->get_binding($tableField, $getData, 'update', $arrInclude);
-        $this->_db->bind_param_push($arrBind['bind'], 'i', $sno);
-        $this->_db->set_update_db('tableLogSfApi', $arrBind['param'], 'sno = ?', $arrBind['bind']);
+        $arrBind = $this->db->get_binding($tableField, $getData, 'update', $arrInclude);
+        $this->db->bind_param_push($arrBind['bind'], 'i', $sno);
+        $this->db->set_updatedb('tableLogSfApi', $arrBind['param'], 'sno = ?', $arrBind['bind']);
 
-        //Webidas::dumper($this->_db->getBindingQueryString($this->_db->getQueryString(), $arrBind['bind']),$arrBind['bind']);
+        //Webidas::dumper($this->db->getBindingQueryString($this->db->getQueryString(), $arrBind['bind']),$arrBind['bind']);
         //Webidas::stop();
 
-        $affectedRows = $this->_db->affected_rows();
+        $affectedRows = $this->db->affected_rows();
 
         //Webidas::dumper($affectedRows);
         //Webidas::stop();
@@ -135,10 +138,10 @@ class SfApiLogger
             $getData[$val['val']] = gd_isset($getData[$val['val']]);
         }
         $getData['serviceNm'] = $this->getServiceName();
-        $arrBind = $this->_db->get_binding($tableField, $getData, 'insert');
-        $this->_db->set_insert_db('tableLogSfApi', $arrBind['param'], $arrBind['bind'], 'y');
-        //Webidas::dumper($this->_db->getQueryString(), $arrBind);
-        return $this->_db->insert_id();
+        $arrBind = $this->db->get_binding($tableField, $getData, 'insert');
+        $this->db->set_insertdb('tableLogSfApi', $arrBind['param'], $arrBind['bind'], 'y');
+        //Webidas::dumper($this->db->getQueryString(), $arrBind);
+        return $this->db->insert_id();
         /*}*/
     }
 }
